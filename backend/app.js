@@ -1,3 +1,5 @@
+// backend/app.js
+
 const express = require('express');
 require('express-async-errors');
 const morgan = require('morgan');
@@ -19,30 +21,30 @@ app.use(express.json());
 if (!isProduction) {
     // enable cors only in development
     app.use(cors());
-  }
-  
-  // helmet helps set a variety of headers to better secure your app
-  app.use(
-    helmet.crossOriginResourcePolicy({
-      policy: "cross-origin"
-    })
-  );
-  
-  // Set the _csrf token and create req.csrfToken method
-  app.use(
-    csurf({
-      cookie: {
-        secure: isProduction,
-        sameSite: isProduction && "Lax",
-        httpOnly: true
-      }
-    })
-  );
+}
 
-//route connections
+// helmet helps set a variety of headers to better secure your app
+app.use(
+  helmet.crossOriginResourcePolicy({
+    policy: "cross-origin"
+  })
+);
+
+// Set the _csrf token and create req.csrfToken method
+app.use(
+  csurf({
+    cookie: {
+      secure: isProduction,
+      sameSite: isProduction && "Lax",
+      httpOnly: true
+    }
+  })
+);
+
+// Route connections
 const routes = require('./routes');
+app.use(routes); // Connect all the routes
 
-//error handling middleware
 // Catch unhandled requests and forward to error handler.
 app.use((_req, _res, next) => {
   const err = new Error("The requested resource couldn't be found.");
@@ -52,10 +54,8 @@ app.use((_req, _res, next) => {
   next(err);
 });
 
-//catching sequelize errors
+// Catching sequelize errors
 const { ValidationError } = require('sequelize');
-
-// ...
 
 // Process sequelize errors
 app.use((err, _req, _res, next) => {
@@ -71,7 +71,7 @@ app.use((err, _req, _res, next) => {
   next(err);
 });
 
-//formatting all the errors before returning a JSON response
+// Formatting all the errors before returning a JSON response
 // Error formatter
 app.use((err, _req, res, _next) => {
   res.status(err.status || 500);
@@ -83,9 +83,5 @@ app.use((err, _req, res, _next) => {
     stack: isProduction ? null : err.stack
   });
 });
-
-
-app.use(routes); // Connect all the routes
-
 
 module.exports = app;

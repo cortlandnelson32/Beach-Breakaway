@@ -8,9 +8,7 @@ const { User } = require('../../db/models');
 
 const router = express.Router();
 
-// router.get('/', (req, res) => {
-//     res.json('test')
-// })
+
 // Log in
 router.post(
     '/',
