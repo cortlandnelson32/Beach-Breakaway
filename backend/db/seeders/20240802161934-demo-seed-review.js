@@ -12,19 +12,13 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   await queryInterface.bulkInsert('Spots', [{
-    ownerId: 1,
-    address: 'address1',
-    city: 'city1',
-    state: 'state1',
-    country: 'country1',
-    lat: 25.0,
-    lng: 25.0,
-    name: 'john',
-    description: 'description1',
-    price: 20.50,
-    avgRating: 4.5
-   }])
+    await queryInterface.bulkInsert('Reviews',[
+      {
+        "review": "This was an awesome spot!",
+        "stars": 4,
+      }
+  ]
+  )
   },
 
   async down (queryInterface, Sequelize) {
@@ -34,6 +28,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete('Spots', null, {})
+    await queryInterface.bulkDelete('Reviews', null, {})
   }
 };
