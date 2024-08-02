@@ -11,7 +11,11 @@ module.exports = {
       },
       ownerId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+          model: 'Users'
+        },
+        onDelete: 'CASCADE'
       },
       address: {
         type: Sequelize.STRING,
@@ -61,7 +65,7 @@ module.exports = {
       },
       avgRating: {
         type: Sequelize.FLOAT,
-        allowNull: false
+        allowNull: true
       },
       previewImage: {
         type: Sequelize.STRING,
