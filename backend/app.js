@@ -11,7 +11,6 @@ const cookieParser = require('cookie-parser');
 const { environment } = require('./config');
 const isProduction = environment === 'production';
 
-const reviewsRouter = require('./routes/api/reviews');
 
 const app = express();
 
@@ -85,8 +84,6 @@ app.use((err, _req, res, _next) => {
     stack: isProduction ? null : err.stack
   });
 });
-
-app.use('/api/reviews', reviewsRouter);
 
 
 module.exports = app;
