@@ -14,12 +14,19 @@ module.exports = (sequelize, DataTypes) => {
       Spot.hasMany(models.Review,{
         foreignKey: 'spotId'
       })
+      Spot.hasMany(models.SpotImage, {
+        foreignKey: 'spotId',
+      })
+      Spot.belongsTo(models.User, {
+        foreignKey: 'ownerId',
+        as: 'Owner' //set up alias to match what the cards say. Must obey the cards
+      })
     }
   }
   Spot.init({
     ownerId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
     address: {
       type: DataTypes.STRING,
@@ -72,7 +79,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     avgRating: {
       type: DataTypes.FLOAT,
-      allowNull: false
+      allowNull: true
     },
     previewImage: {
       type: DataTypes.STRING,
