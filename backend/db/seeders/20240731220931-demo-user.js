@@ -13,25 +13,39 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await User.bulkCreate([
       {
-        firstName: 'test1',
-        lastName: 'test1',
-        email: 'demo@user.io',
-        username: 'Demo-lition',
-        hashedPassword: bcrypt.hashSync('password')
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'johndoe@example.com',
+        username: 'johndoe123',
+        hashedPassword: bcrypt.hashSync('password123')
       },
       {
-        firstName: 'test1',
-        lastName: 'test1',
-        email: 'user1@user.io',
-        username: 'FakeUser1',
-        hashedPassword: bcrypt.hashSync('password2')
+        firstName: 'Jane',
+        lastName: 'Smith',
+        email: 'janesmith@example.com',
+        username: 'janesmith456',
+        hashedPassword: bcrypt.hashSync('password456')
       },
       {
-        firstName: 'test1',
-        lastName: 'test1',
-        email: 'user2@user.io',
-        username: 'FakeUser2',
-        hashedPassword: bcrypt.hashSync('password3')
+        firstName: 'Michael',
+        lastName: 'Johnson',
+        email: 'michaeljohnson@example.com',
+        username: 'mjohnson789',
+        hashedPassword: bcrypt.hashSync('password789')
+      },
+      {
+        firstName: 'Emily',
+        lastName: 'Brown',
+        email: 'emilybrown@example.com',
+        username: 'ebrown987',
+        hashedPassword: bcrypt.hashSync('password987')
+      },
+      {
+        firstName: 'David',
+        lastName: 'Miller',
+        email: 'davidmiller@example.com',
+        username: 'dmiller654',
+        hashedPassword: bcrypt.hashSync('password654')
       }
     ], { validate: true });
   },

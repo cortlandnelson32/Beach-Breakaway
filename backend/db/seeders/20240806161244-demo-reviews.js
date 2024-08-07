@@ -15,8 +15,23 @@ module.exports = {
       {
         review: "This was an awesome spot!",
         stars: 5,
+      },
+      {
+        review: "Great location, but a bit noisy.",
+        stars: 3,
+      },
+      {
+        review: "Amazing host, highly recommend!",
+        stars: 4,
+      },
+      {
+        review: "Place was clean and comfortable.",
+        stars: 4,
+      },
+      {
+        review: "Disappointed with the amenities.",
+        stars: 2,
       }
-      //Add more reviews
     ], { validate: true });
   },
 
