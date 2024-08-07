@@ -4,22 +4,21 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+    
     static associate(models) {
       // define association here
       Spot.hasMany(models.Review,{
-        foreignKey: 'spotId'
+        foreignKey: 'spotId', 
+        onDelete: 'CASCADE'
       })
       Spot.hasMany(models.SpotImage, {
-        foreignKey: 'spotId',
+        foreignKey: 'spotId', 
+        onDelete: 'CASCADE'
       })
       Spot.belongsTo(models.User, {
         foreignKey: 'ownerId',
-        as: 'Owner' //set up alias to match what the cards say. Must obey the cards
+        as: 'Owner', //set up alias to match what the cards say. Must obey the cards
+        onDelete: 'CASCADE' 
       })
     }
   }
@@ -29,8 +28,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     address: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        len: [0, 100]
+      }
     },
     city: {
       type: DataTypes.STRING,
@@ -74,16 +76,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        min: 0
+        min: 0,
+        isFloat: true,
+        isNumeric: true
       }
-    },
-    avgRating: {
-      type: DataTypes.FLOAT,
-      allowNull: true
-    },
-    previewImage: {
-      type: DataTypes.STRING,
-      allowNull: true
     }
 
   }, {
