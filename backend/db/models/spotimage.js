@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       // defaultValue: false,
       validate: {
         isBoolean(value) {
-          if (typeof value !== 'boolean')
+          if(typeof value !== typeof true)
             throw new Error("Preview must be true or false")
         }
       }
