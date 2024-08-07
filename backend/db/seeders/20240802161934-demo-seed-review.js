@@ -1,33 +1,30 @@
+
 'use strict';
+
+const { Review } = require('../models');
+
+let options = {};
+options.tableName = 'Reviews'
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA; 
+}
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
-    await queryInterface.bulkInsert('Reviews',[
+  async up(queryInterface, Sequelize) {
+    await Review.bulkCreate([
       {
-        "review": "This was an awesome spot!",
-        "stars": 4,
+        review: "This was an awesome spot!",
+        stars: 5,
       }
-  ]
-  )
+      //Add more reviews
+    ], { validate: true });
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
-    await queryInterface.bulkDelete('Reviews', null, {})
+    
+    options.tableName = 'Reviews';
+    const Op = Sequelize.Op;
+    return queryInterface.bulkDelete(options, {}, {});
   }
 };
