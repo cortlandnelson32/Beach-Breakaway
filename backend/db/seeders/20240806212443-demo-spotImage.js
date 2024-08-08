@@ -24,18 +24,18 @@ module.exports = {
       },
       {
         spotId: 3,
-        url: "https://via.placeholder.com/300x200", 
-        preview: false // Randomly set preview
+        url: "https://media.architecturaldigest.com/photos/5fdba5629542eda0bedf1080/master/pass/60d85131-b43f-4edb-8051-28c0e6bd377a.jpg", 
+        preview: false
       },
       {
         spotId: 4,
-        url: "https://via.placeholder.com/300x200",
+        url: "https://www.refinery29.com/images/11652821.jpg?format=webp&width=720&height=864&quality=85&crop=1333%2C1600%2Cx724%2Cy0",
         preview: true
       },
       {
         spotId: 5,
-        url: "https://via.placeholder.com/300x200", 
-        preview: Math.random() < 0.5 // Randomly set preview
+        url: "https://cdn1.matadornetwork.com/blogs/1/2022/09/charming-newly-renovated-bungalow-exterior-airbnb-tampa.jpg", 
+        preview: Math.random() < 0.5 //randomly set value
       }
     ],  { validate: true })
   },
