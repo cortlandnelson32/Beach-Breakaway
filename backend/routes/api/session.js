@@ -94,3 +94,24 @@ router.get(
 
 
 module.exports = router;
+
+// {
+//   "credential": "johndoe@gmail.com",
+//   "password": "password123"
+// }
+// {
+//   "credential": "janesmith@gmail.com",
+//   "password": "password456"
+// }
+// {
+//   "credential": "michaeljohnson@gmail.com",
+//   "password": "password789"
+// }
+// {
+//   "credential": "emilybrown@gmail.com",
+//   "password": "password987"
+// }
+// {
+//   "credential": "davidmiller@gmail.com",
+//   "password": "password654"
+// }
