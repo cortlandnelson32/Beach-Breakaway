@@ -2,11 +2,20 @@ const express = require("express");
 const { Op } = require("sequelize");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
 
 const { requireAuth } = require("../../utils/auth");
 
-const { Review, User, Spot, ReviewImage } = require("../../db/models");
+const { Review, User, Spot, ReviewImage, Booking } = require("../../db/models");
 
+const validateReviews = [
+	check('review').exists({ checkFalsy: true }).withMessage("Review Text is required"),
+	check('stars').isLength({ min: 1, max: 5 }).withMessage("Stars must be an integer from 1 to 5"),
+	handleValidationErrors
+];
+
+//get all reviews of current user
 router.get("/current", requireAuth, async (req, res) => {
 	const userId = req.user.id;
 
@@ -32,12 +41,11 @@ router.get("/current", requireAuth, async (req, res) => {
 					"lng",
 					"name",
 					"price",
-					//previewImage
 				],
 			},
 			{
 				model: ReviewImage,
-				attributes: ["id", "url"],
+				attributes: ["id", "image_url"],
 			},
 		],
 	});
@@ -45,6 +53,8 @@ router.get("/current", requireAuth, async (req, res) => {
 	res.json({ Reviews: reviews });
 });
 
+
+//edit a review
 router.put("/:reviewId", requireAuth, async (req, res, next) => {
 	const review = await Review.findByPk(req.params.reviewId);
 	if (!review) {
@@ -67,6 +77,7 @@ router.put("/:reviewId", requireAuth, async (req, res, next) => {
     }
 });
 
+//add an image to a review based on review's id
 router.post("/:reviewId/images", requireAuth, async (req, res) => {
 	const review = await Review.findByPk(req.params.reviewId);
 	if (!review) {
@@ -100,6 +111,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
     }
 });
 
+//delete a review
 router.delete("/:reviewId", requireAuth, async (req, res) => {
 	const review = await Review.findByPk(req.params.reviewId);
 	if (!review) {
