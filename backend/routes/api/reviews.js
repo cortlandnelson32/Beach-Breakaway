@@ -79,6 +79,9 @@ router.put("/:reviewId", requireAuth, async (req, res, next) => {
 
 //add an image to a review based on review's id
 router.post("/:reviewId/images", requireAuth, async (req, res) => {
+	const { user, params } = req;
+  const { reviewId } = params;
+	const { url } = req.body;
 	const review = await Review.findByPk(req.params.reviewId);
 	if (!review) {
 		return res.status(404).json({
@@ -86,30 +89,30 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
 		});
 	}
 
-	if (Number(req.user.id) === review.userId) {
-		const  reviewId  = review.id;
-		const { url } = req.body;
+	if (Number(req.user.id) !== review.userId) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
 
-		const images = await ReviewImage.findAll({
-            where: {
-                reviewId,
-			},
+	const existingImages = await ReviewImage.count({ where: { reviewId } });
+	if (existingImages >= 10) {
+		return res.status(403).json({
+			message: "Maximum number of images for this resource was reached",   
+
 		});
-		if (images.length >= 10) {
-            return res.status(403).json({
-                message: "Maximum number of images for this resource was reached",
-			});
-		}
-       const newImage =  await ReviewImage.create({
-                reviewId,
-                url,
-            });
-		await newImage.save();
-		return res.status(201).json(newImage);
-	} else {
-        res.status(403).json({message: "Forbidden"})
-    }
+	}
+  const newImage = await ReviewImage.create({
+		reviewId,
+		url,
+	}, {
+		include: [{ model: Review }],
+		attributes: ['id', 'url']
+	});
+	return res.status(201).json({
+		id: newImage.id,
+		url: newImage.url,
+	});
 });
+
 
 //delete a review
 router.delete("/:reviewId", requireAuth, async (req, res) => {
