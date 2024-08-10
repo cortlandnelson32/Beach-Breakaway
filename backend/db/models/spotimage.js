@@ -18,10 +18,6 @@ module.exports = (sequelize, DataTypes) => {
     url: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        isUrl: true,
-        len: [12, 200] 
-      }
     },
     spotId: {
       type: DataTypes.INTEGER,
@@ -30,7 +26,6 @@ module.exports = (sequelize, DataTypes) => {
     preview: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      // defaultValue: false,
       validate: {
         isBoolean(value) {
           if(typeof value !== typeof true)
