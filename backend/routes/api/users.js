@@ -31,31 +31,94 @@ const validateSignup = [
 ];
 
 
+// // Sign up
+// router.post(
+//   '/',
+//   validateSignup,
+//   async (req, res) => {
+//     const { firstName, lastName, email, password, username } = req.body;
+//     const hashedPassword = bcrypt.hashSync(password);
+//     const user = await User.create({ firstName, lastName, email, username, hashedPassword });
+
+//     const safeUser = {
+//       id: user.id,
+//       firstName: user.firstName,
+//       lastName: user.lastName,
+//       email: user.email,
+//       username: user.username,
+//     };
+
+//     await setTokenCookie(res, safeUser);
+
+//     return res.json({
+//       user: safeUser
+//     });
+//   }
+// );
 // Sign up
 router.post(
   '/',
-  validateSignup,
+  validateSignup, // Use existing validation logic
   async (req, res) => {
     const { firstName, lastName, email, password, username } = req.body;
     const hashedPassword = bcrypt.hashSync(password);
-    const user = await User.create({ firstName, lastName, email, username, hashedPassword });
 
-    const safeUser = {
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      username: user.username,
-    };
+    try {
+      const existingEmail = await User.findOne({ where: { email } });
+      const existingUsername = await User.findOne({ where: { username } });
 
-    await setTokenCookie(res, safeUser);
+      if (existingEmail || existingUsername)   
+ {
+        const errors = {};
+        if (existingEmail) errors.email = "User with that email already exists";
+        if (existingUsername) errors.username = "User with that username already exists";
+        return res.status(500).json({ message: "User already exists", errors });
+      }
 
-    return res.json({
-      user: safeUser
-    });
+      const user = await User.create({ firstName, lastName, email, username, hashedPassword });
+
+      const safeUser = {
+        id: user.id,
+        firstName:   
+ user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        username: user.username,
+      };
+
+      await setTokenCookie(res, safeUser);
+
+      return res.status(201).json({
+        user: safeUser   
+
+      });
+    } catch (error) {
+      console.error(error); // Log the error for debugging
+      return res.status(500).json({ message: 'An error occurred' }); // Generic error message for user
+    }
   }
 );
 
+// Add the following validation functions to your models/User.js file:
+async function validateEmail(email) {
+  try {
+    const existingUser = await User.findOne({ where: { email } });
+    return !existingUser; // Email is valid if no existing user found
+  } catch (error) {
+    console.error(error);
+    return false; // Assume error means email is invalid
+  }
+}
+
+async function validateUsername(username) {
+  try {
+    const existingUser = await User.findOne({ where: { username } });
+    return !existingUser; // Username is valid if no existing user found
+  } catch (error) {
+    console.error(error);
+    return false; // Assume error means username is invalid
+  }
+}
 
 
 module.exports = router;
