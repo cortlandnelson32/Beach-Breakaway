@@ -153,7 +153,6 @@ router.get("/current", requireAuth, async (req, res, next) => {
   
   //Get all Spots
 router.get('/', validateQueryValues, async (req, res) => {
-  const options = queryFormatter(req.query)
   let { page=1, size=20, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
  
   page = Number(page);
