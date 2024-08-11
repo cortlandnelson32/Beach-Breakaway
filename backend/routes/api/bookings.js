@@ -26,7 +26,13 @@ const validateBooking = [
 // Route to get all of the current user's bookings
 router.get('/current', requireAuth, async (req, res) => {
   try {
-    const userId = req.user.id; // Assuming req.user contains the authenticated user's info
+    const userId = req.user.id; 
+    const myBooking = await Booking.findByPk(parseInt(req.params.bookingId))
+    if (!myBooking) {
+      return res.status(404).json({
+          message: "Booking couldn't be found"
+      })
+    } 
 
     const bookings = await Booking.findAll({
       where: { userId },
@@ -58,10 +64,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
       }
 
       if (myBooking.userId !== parseInt(req.user.id)) {
-          const err = new Error("Booking must belong to the current user");
-          err.status = 403;
-          err.title = "Forbidden";
-          return next(err)
+        return res.status(403).json({ message: "Forbidden" });
       }
 
       if (new Date(endDate) <= new Date(startDate)) {
@@ -132,9 +135,7 @@ router.delete('/bookings/:bookingId', requireAuth, async (req, res) => {
 
       // Check if the booking belongs to the current user or the spot belongs to the current user
       if (booking.userId !== userId && booking.Spot.ownerId !== userId) {
-          return res.status(403).json({
-              message: "You are not authorized to delete this booking"
-          });
+        return res.status(403).json({ message: "Forbidden" });
       }
 
       // Check if the booking has already started
