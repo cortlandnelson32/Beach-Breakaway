@@ -96,8 +96,14 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res) => {
   const spot = await Spot.findByPk(booking.spotId);
 
   if (new Date(startDate) < new Date()) {
-    return res.status(403).json({
+    return res.status(400).json({
       message: "Past bookings can't be modified",
+    });
+  }
+
+  if (new Date(startDate) >= new Date(endDate)) {
+    return res.status(400).json({
+      message: "End date must be after start date",
     });
   }
 

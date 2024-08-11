@@ -9,10 +9,16 @@ const { requireAuth } = require("../../utils/auth");
 
 const { Review, User, Spot, ReviewImage, Booking } = require("../../db/models");
 
+// validate the reviews
 const validateReviews = [
-	check('review').exists({ checkFalsy: true }).withMessage("Review Text is required"),
-	check('stars').isLength({ min: 1, max: 5 }).withMessage("Stars must be an integer from 1 to 5"),
-	handleValidationErrors
+  check('review')
+    .exists({checkFalsy: true})
+    .withMessage('Review text is required'),
+  check('stars')
+    .exists({checkFalsy: true})
+    .isInt({min: 1, max: 5})
+    .withMessage('Stars must be an integer from 1 to 5'),
+  handleValidationErrors
 ];
 
 //get all reviews of current user
@@ -41,6 +47,7 @@ router.get("/current", requireAuth, async (req, res) => {
 					"lng",
 					"name",
 					"price",
+					"previewImage"
 				],
 			},
 			{
@@ -55,26 +62,18 @@ router.get("/current", requireAuth, async (req, res) => {
 
 
 //edit a review
-router.put("/:reviewId", requireAuth, async (req, res, next) => {
-	const review = await Review.findByPk(req.params.reviewId);
-	if (!review) {
-		return res.status(404).json({
-			message: "Review couldn't be found",
-		});
-	}
-
-	if (Number(req.user.id) === review.userId) {
-		try {
-			await review.set(req.body);
-			await review.save();
-			res.json(review);
-		} catch (e) {
-			e.status = 400
-            next(e)
-		}
-	} else {
-        res.status(403).json({message: "Forbidden"})
-    }
+router.put('/:reviewId', requireAuth, validateReviews, async (req, res, next) => {
+  const userId = req.user.id;
+  const {reviewId} = req.params;
+  const review = await Review.findByPk(reviewId);
+  if(!review) {
+    return res.status(404).json({"message": "Review couldn't be found"})
+  }
+  if(userId !== review.dataValues.userId) {
+    return res.status(403).json({"message":"Forbidden"})
+  }
+  const updatedReview = await review.update(req.body)
+  return res.json(updatedReview)
 });
 
 //add an image to a review based on review's id

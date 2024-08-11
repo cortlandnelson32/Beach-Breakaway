@@ -17,6 +17,20 @@ const {
   ReviewImage
 } = require("../../db/models");
 
+const validateQueryValues = [
+  check('page').optional().isInt({ min: 1 }).withMessage('Page must be greater than or equal to 1'),
+  check('size').optional().isInt({ min: 1 }).withMessage('Size must be greater or equal to 1'),
+  check('maxLat').optional().isFloat({ max: 90 }).withMessage('Maximum latitude is invalid'),
+  check('minLat').optional().isFloat({ min: -90 }).withMessage('Minimum latitude is invalid'),
+  check('maxLng').optional().isFloat({ max: 180 }).withMessage('Maximum longitude is invalid'),
+  check('minLng').optional().isFloat({ min: -180 }).withMessage('Minimum longitude is invalid'),
+  check('minPrice').optional().isFloat({ min: 0 }).withMessage('Minimum price must be greater than or equal to 0'),
+  check('maxPrice').optional().isFloat({ min: 0 }).withMessage('Maximum price must be greater than or equal to 0'),
+  check('minPrice').optional().isFloat({ max: 'maxPrice' }).withMessage('Minimum price must be lower than Maximum.'),
+  check('maxPrice').optional().isFloat({ min: 'minPrice' }).withMessage('Maximum price must be greater than Minimum.'),
+  handleValidationErrors
+];
+
 const spotsInfo = async (spots) => {
   const res = [];
   for (let i = 0; i < spots.length; i++) {
@@ -138,7 +152,8 @@ router.get("/current", requireAuth, async (req, res, next) => {
   });
   
   //Get all Spots
-router.get('/',async (req, res) => {
+router.get('/', validateQueryValues, async (req, res) => {
+  const options = queryFormatter(req.query)
   let { page=1, size=20, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
  
   page = Number(page);
@@ -188,11 +203,11 @@ router.get('/',async (req, res) => {
     delete spots[i].SpotImages;
   }
 
-  return res.status(200).json({
-    Spots: spots,
+  return res.json({
+    Spots:spots,
     // Page: page,
     // Size: size
-  })
+  });
 })
 
 
@@ -309,7 +324,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
     url: newImage.url,
     preview: newImage.preview,
   };
-  return res.status(200).json(response);
+  return res.status(201).json(response);
 });
 
 //edit a spot
