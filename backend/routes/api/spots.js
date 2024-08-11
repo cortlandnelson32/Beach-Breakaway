@@ -194,61 +194,61 @@ router.get('/',async (req, res) => {
 router.get('/:spotId', async (req, res, next) => {
     try {
 
-        const spot = await Spot.findByPk(parseInt(req.params.spotId));
+      const spot = await Spot.findByPk(parseInt(req.params.spotId));
 
-        if (!spot) {
-            res.status(404).json({
-                message: "Spot couldn't be found"
-            })
-        }
+      if (!spot) {
+          res.status(404).json({
+              message: "Spot couldn't be found"
+          })
+      }
 
-        const reviews = await Review.findAll({
-            where: {
-                spotId: spot.id
-            }
-        });
+      const reviews = await Review.findAll({
+          where: {
+              spotId: spot.id
+          }
+      });
 
-        let numReviews = 0;
-        let sumStars = 0
-        for (const review of reviews) {
-            sumStars += review.stars;
-            numReviews++
-        }
-        let avg = sumStars / numReviews;
+      let numReviews = 0;
+      let sumStars = 0
+      for (const review of reviews) {
+          sumStars += review.stars;
+          numReviews++
+      }
+      let avg = sumStars / numReviews;
 
-        const images = await SpotImage.findAll({
-            where: {
-                spotId: spot.id
-            },
-            attributes: ['id', 'url', 'preview']
-        })
+      const images = await SpotImage.findAll({
+          where: {
+              spotId: spot.id
+          },
+          attributes: ['id', 'url', 'preview']
+      })
 
-        const owner = await User.findByPk(spot.ownerId);
+      const owner = await User.findByPk(spot.ownerId);
 
-        spot.SpotImages = images;
-        spot.Owner = owner;
-        spot.lat = parseFloat(spot.lat);
-        spot.lng = parseFloat(spot.lng);
-        spot.price = parseFloat(spot.price);
+      spot.SpotImages = images;
+      spot.Owner = owner;
+      spot.lat = parseFloat(spot.lat);
+      spot.lng = parseFloat(spot.lng);
+      spot.price = parseFloat(spot.price);
 
-        res.json({
-            id: spot.id,
-            ownerId: spot.ownerId,
-            address: spot.address,
-            city: spot.city,
-            state: spot.state,
-            country: spot.country,
-            lat: spot.lat,
-            lng: spot.lng,
-            name: spot.name,
-            description: spot.description,
-            price: spot.price,
-            createdAt: spot.createdAt,
-            updatedAt: spot.updatedAt,
-            numReviews: numReviews,
-            avgStarRating: avg,
-            SpotImages: images,
-            Owner: owner
+      res.json({
+          id: spot.id,
+          ownerId: spot.ownerId,
+          address: spot.address,
+          city: spot.city,
+          state: spot.state,
+          country: spot.country,
+          lat: spot.lat,
+          lng: spot.lng,
+          name: spot.name,
+          description: spot.description,
+          price: spot.price,
+          createdAt: spot.createdAt,
+          updatedAt: spot.updatedAt,
+          numReviews: numReviews,
+          avgStarRating: avg,
+          SpotImages: images,
+          Owner: owner
         });
     } catch (error) {
         next(error);
@@ -353,7 +353,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
       const spot = await Spot.findByPk(parseInt(req.params.spotId))
       if (!spot)
         return res.status(404).json({
-            message: "Spot couldn't be found"
+          message: "Spot couldn't be found"
       });
 
       if (spot.ownerId !== req.user.id) {

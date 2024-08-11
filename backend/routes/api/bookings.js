@@ -152,38 +152,38 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
   const userId = req.user.id; // Assuming user ID is available in req.user after authentication
 
   try {
-      // Find the booking
-      const booking = await Booking.findByPk(bookingId, {
-          include: [{ model: Spot }]
+    // Find the booking
+    const booking = await Booking.findByPk(bookingId, {
+      include: [{ model: Spot }]
+    });
+
+    // If booking doesn't exist, return 404
+    if (!booking) {
+      return res.status(404).json({
+        message: "Booking couldn't be found"
       });
+    }
 
-      // If booking doesn't exist, return 404
-      if (!booking) {
-          return res.status(404).json({
-              message: "Booking couldn't be found"
-          });
-      }
+    // Check if the booking belongs to the current user or the spot belongs to the current user
+    if (booking.userId !== userId && booking.Spot.ownerId !== userId) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
 
-      // Check if the booking belongs to the current user or the spot belongs to the current user
-      if (booking.userId !== userId && booking.Spot.ownerId !== userId) {
-        return res.status(403).json({ message: "Forbidden" });
-      }
-
-      // Check if the booking has already started
-      const currentDate = new Date();
-      if (new Date(booking.startDate) <= currentDate) {
-          return res.status(403).json({
-              message: "Bookings that have been started can't be deleted"
-          });
-      }
-
-      // Delete the booking
-      await booking.destroy();
-
-      // Return successful response
-      return res.status(200).json({
-          message: "Successfully deleted"
+    // Check if the booking has already started
+    const currentDate = new Date();
+    if (new Date(booking.startDate) <= currentDate) {
+      return res.status(403).json({
+        message: "Bookings that have been started can't be deleted"
       });
+    }
+
+    // Delete the booking
+    await booking.destroy();
+
+    // Return successful response
+    return res.status(200).json({
+        message: "Successfully deleted"
+    });
   } catch (error) {
       console.error(error);
       return res.status(500).json({

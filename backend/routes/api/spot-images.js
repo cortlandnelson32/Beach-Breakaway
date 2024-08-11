@@ -13,7 +13,7 @@ router.delete('/:spotImageId', requireAuth, async (req, res, next) => {
 
 			if (!mySpotImage) {
 					return res.status(404).json({
-							message: "Spot Image couldn't be found"
+						message: "Spot Image couldn't be found"
 					})
 			};
 
