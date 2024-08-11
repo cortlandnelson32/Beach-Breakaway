@@ -17,12 +17,6 @@ const {
   ReviewImage
 } = require("../../db/models");
 
-const validateReviews = [
-    check('review').exists({ checkFalsy: true }).withMessage("Review Text is required"),
-    check('stars').isLength({ min: 1, max: 5 }).withMessage("Stars must be an integer from 1 to 5"),
-    handleValidationErrors
-];
-
 const spotsInfo = async (spots) => {
   const res = [];
   for (let i = 0; i < spots.length; i++) {
@@ -115,7 +109,19 @@ const validateSpot = [
       .isFloat({min: 0})
       .withMessage("Price per day must be a positive number"),
     handleValidationErrors
-]
+];
+
+// validate the reviews
+const validateReviews = [
+  check('review')
+    .exists({checkFalsy: true})
+    .withMessage('Review text is required'),
+  check('stars')
+    .exists({checkFalsy: true})
+    .isInt({min: 1, max: 5})
+    .withMessage('Stars must be an integer from 1 to 5'),
+  handleValidationErrors
+];
 
 // GET all spots owned by the current user
 router.get("/current", requireAuth, async (req, res, next) => {
@@ -415,22 +421,22 @@ router.post('/:spotId/reviews', requireAuth, validateReviews, async (req, res, n
 
       const spotReviews = await Review.findAll({
           where: {
-              spotId: req.params.spotId
+            spotId: req.params.spotId
           }
       })
 
       for (const review of spotReviews) {
           if (review.userId === req.user.id)
               return res.status(500).json({
-                  message: "User already has a review for this spot"
+                message: "User already has a review for this spot"
               })
       }
 
       const createdReview = await Review.create({
-          userId: req.user.id,
-          spotId: parseInt(req.params.spotId),
-          review: review,
-          stars: stars
+        userId: req.user.id,
+        spotId: parseInt(req.params.spotId),
+        review: review,
+        stars: stars
       })
 
       res.status(201).json(createdReview);
