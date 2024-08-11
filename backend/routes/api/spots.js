@@ -184,8 +184,8 @@ router.get('/',async (req, res) => {
 
   return res.status(200).json({
     Spots: spots,
-    Page: page,
-    Size: size
+    // Page: page,
+    // Size: size
   })
 })
 
@@ -256,7 +256,7 @@ router.get('/:spotId', async (req, res, next) => {
 });
 
 //create a spot
-router.post('/', validateSpot, requireAuth, async (req, res) => {
+router.post('/', requireAuth, validateSpot, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } =
   req.body;
 const ownerId = req.user.id;
@@ -283,48 +283,31 @@ try {
 
 
 //Add an image to a Spot based on the Spot's Id
-router.post('/:spotId/images', requireAuth, async (req, res, next) => {
-    try {
-        const { url, preview } = req.body;
-        const spot = await Spot.findByPk(req.params.spotId);
+router.post("/:spotId/images", requireAuth, async (req, res) => {
+  const spot = await Spot.findByPk(req.params.spotId);
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot couldn't be found",
+    });
+  }
 
-        const spotImages = await SpotImage.create({
-            url: url,
-            preview: preview,
-            spotId: req.params.spotId
-        });
+  if (spot.ownerId !== req.user.id) {
+    return res.status(403).json({
+      message: "Forbidden",
+    });
+  }
 
-        const safeSpotImage = await SpotImage.findAll({
-            where: {
-                id: spotImages.id
-            },
-            attributes: ['id', 'url', 'preview']
-        });
-
-        if (!spot) {
-          return res.status(404).json({
-            message: "Spot couldn't be found",
-          });
-        }
-
-        if (spot.ownerId !== req.user.id) {
-          return res.status(403).json({
-            message: "Forbidden",
-          });
-        }
-
-        res.status(201).json({
-            spotId: parseInt(req.params.spotId, 10),
-            url: safeSpotImage[0].url,
-            preview: safeSpotImage[0].preview
-        });
-    } catch (error) {
-        next(error);
-    }
+  const newImage = await spot.createSpotImage(req.body);
+  const response = {
+    id: newImage.id,
+    url: newImage.url,
+    preview: newImage.preview,
+  };
+  return res.status(200).json(response);
 });
 
 //edit a spot
-router.put('/:spotId', validateSpot, requireAuth, async (req, res) => {
+router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
     const { spotId } = req.params;
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
@@ -390,7 +373,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
 
 
 //Get all Reviews by a Spot's Id
-router.get('/:spotId/reviews', requireAuth, validateReviews, async (req, res, next) => {
+router.get('/:spotId/reviews', requireAuth, async (req, res, next) => {
 	try {
     const Reviews = await Review.findAll({
       where: {
@@ -427,10 +410,8 @@ router.post('/:spotId/reviews', requireAuth, validateReviews, async (req, res, n
       const spot = await Spot.findByPk(parseInt(req.params.spotId));
 
       if (!spot)
-          return res.status(404).json(
-              {
-                  message: "Spot couldn't be found"
-              });
+        return res.status(404).json(
+          { message: "Spot couldn't be found"});
 
       const spotReviews = await Review.findAll({
           where: {
@@ -506,12 +487,11 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
     res.status(200).json({ Bookings: response });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: 'An error occurred while fetching bookings.' });
   }
 });
 
-// Route to create a booking for a spot based on the spot's ID
+// create a booking for a spot based on the spot's ID
 router.post('/:spotId/bookings', requireAuth, async (req, res) => {
   try {
     const { spotId } = req.params;

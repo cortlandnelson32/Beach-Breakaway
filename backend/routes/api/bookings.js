@@ -24,99 +24,128 @@ const validateBooking = [
 
 
 // Route to get all of the current user's bookings
-router.get('/current', requireAuth, async (req, res) => {
+// router.get('/current', requireAuth, async (req, res) => {
+//   try {
+//     const userId = req.user.id; 
+//     const myBooking = await Booking.findByPk(parseInt(req.params.bookingId))
+//     if (!myBooking) {
+//       return res.status(404).json({
+//           message: "Booking couldn't be found"
+//       })
+//     } 
+
+//     const bookings = await Booking.findAll({
+//       where: { userId },
+//       include: {
+//         model: Spot,
+//         attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage']
+//       }
+//     });
+
+//     res.status(200).json({ Bookings: bookings });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'An error occurred while fetching bookings.' });
+//   }
+// });
+
+router.get('/current', requireAuth, async (req, res, next) => {
   try {
-    const userId = req.user.id; 
-    const myBooking = await Booking.findByPk(parseInt(req.params.bookingId))
-    if (!myBooking) {
-      return res.status(404).json({
-          message: "Booking couldn't be found"
-      })
-    } 
-
-    const bookings = await Booking.findAll({
-      where: { userId },
-      include: {
-        model: Spot,
-        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage']
-      }
-    });
-
-    res.status(200).json({ Bookings: bookings });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'An error occurred while fetching bookings.' });
-  }
-});
-
-
-//Edit A Booking
-router.put('/:bookingId', requireAuth, async (req, res, next) => {
-  try {
-      const { startDate, endDate } = req.body;
-
-      const myBooking = await Booking.findByPk(parseInt(req.params.bookingId))
-
-      if (!myBooking) {
-          return res.status(404).json({
-              message: "Booking couldn't be found"
-          })
-      }
-
-      if (myBooking.userId !== parseInt(req.user.id)) {
-        return res.status(403).json({ message: "Forbidden" });
-      }
-
-      if (new Date(endDate) <= new Date(startDate)) {
-          const err = new Error('Validation Error ');
-          err.status = 400;
-          err.message = "Bad Request"
-          err.errors = { endDate: "endDate cannot be on or before startDate" }
-          return next(err)
-      }
-
-      if (new Date(endDate) <= new Date(Date.now())) {
-          return res.status(403).json({
-              message: "Past bookings can't be modified"
-          })
-      }
-
       const bookings = await Booking.findAll({
           where: {
-              spotId: parseInt(myBooking.spotId)
+              userId: parseInt(req.user.id)
           }
       });
 
-      const err = new Error("Sorry, this spot is already booked for the specified dates");
-      err.status = 403;
-      err.errors = {};
+      const formattedBookings = [];
 
       for (const booking of bookings) {
-          if (new Date(booking.startDate) >= new Date(startDate) && new Date(booking.startDate) <= new Date(endDate)) {
-              err.errors.startDate = "Start date conflicts with an existing booking";
-          }
-          if (new Date(booking.endDate) <= new Date(endDate) && new Date(booking.endDate) >= new Date(startDate)) {
-              err.errors.endDate = "End date conflicts with an existing booking";
-          }
+
+          const spot = await Spot.findByPk(booking.spotId);
+
+          const previewImage = await SpotImage.findOne({
+              where: {
+                  spotId: spot.id,
+                  preview: true
+              }
+          });
+
+          formattedBookings.push({
+              id: booking.id,
+              spotId: booking.spotId,
+              Spot: {
+                  id: spot.id,
+                  ownerId: spot.ownerId,
+                  address: spot.address,
+                  city: spot.city,
+                  state: spot.state,
+                  country: spot.country,
+                  lat: spot.lat,
+                  lng: spot.lng,
+                  name: spot.name,
+                  price: spot.price,
+                  previewImage: previewImage.url
+              },
+              userId: booking.userId,
+              startDate: booking.startDate,
+              endDate: booking.endDate,
+              createdAt: booking.createdAt,
+              updatedAt: booking.updatedAt
+          })
       }
 
-      if (err.errors.startDate || err.errors.endDate) {
-          return next(err);
-      }
-
-      await myBooking.update({
-          startDate: startDate,
-          endDate: endDate
-      });
-
-      res.json(myBooking)
-
+      res.json({ Bookings: formattedBookings })
   } catch (error) {
       next(error)
   }
 });
 
-router.delete('/bookings/:bookingId', requireAuth, async (req, res) => {
+
+//Edit A Booking
+router.put("/:bookingId", requireAuth, async (req, res, next) => {
+  try {
+    const { bookingId } = req.params;
+    const toEdit = await Booking.findByPk(+bookingId);
+
+    if (!toEdit) {
+      return res.status(404).json({ message: "Booking couldn't be found" });
+    }
+
+    if (new Date(toEdit.startDate).getTime() < Date.now()) {
+      return res.status(403).json({ message: "Past bookings can't be modified" });
+    }
+
+    if (toEdit.userId !== req.user.id) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    const { startDate, endDate } = req.body;
+    const isConflicting = await checkConflict({
+      id: toEdit.id,
+      spotId: toEdit.spotId,
+      startDate,
+      endDate,
+    });
+
+    if (isConflicting) {
+      const err = new Error(
+        "Sorry, this spot is already booked for the specified dates"
+      );
+      err.status = isConflicting.status || 403;
+      delete isConflicting.status;
+      err.errors = isConflicting;
+      return next(err);
+    }
+    toEdit.set({ startDate, endDate });
+    const edited = await toEdit.save();
+    res.json(edited);
+  } catch (e) {
+    e.status = 400;
+    next(e);
+  }
+});
+
+router.delete('/:bookingId', requireAuth, async (req, res) => {
   const { bookingId } = req.params;
   const userId = req.user.id; // Assuming user ID is available in req.user after authentication
 
