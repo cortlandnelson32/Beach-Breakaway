@@ -128,8 +128,8 @@ router.delete("/:reviewId", requireAuth, async (req, res) => {
 			message: "Successfully deleted",
 		});
 	} else {
-        res.status(403).json({message: "Forbidden"})
-    }
+		res.status(403).json({message: "Forbidden"})
+	}
 });
 
 module.exports = router;
