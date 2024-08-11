@@ -23,31 +23,6 @@ const validateBooking = [
 ];
 
 
-// Route to get all of the current user's bookings
-// router.get('/current', requireAuth, async (req, res) => {
-//   try {
-//     const userId = req.user.id; 
-//     const myBooking = await Booking.findByPk(parseInt(req.params.bookingId))
-//     if (!myBooking) {
-//       return res.status(404).json({
-//           message: "Booking couldn't be found"
-//       })
-//     } 
-
-//     const bookings = await Booking.findAll({
-//       where: { userId },
-//       include: {
-//         model: Spot,
-//         attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage']
-//       }
-//     });
-
-//     res.status(200).json({ Bookings: bookings });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'An error occurred while fetching bookings.' });
-//   }
-// });
 
 router.get('/current', requireAuth, async (req, res, next) => {
   try {
@@ -61,42 +36,42 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
       for (const booking of bookings) {
 
-          const spot = await Spot.findByPk(booking.spotId);
+        const spot = await Spot.findByPk(booking.spotId);
 
-          const previewImage = await SpotImage.findOne({
-              where: {
-                  spotId: spot.id,
-                  preview: true
-              }
-          });
+        const previewImage = await SpotImage.findOne({
+          where: {
+            spotId: spot.id,
+            preview: true
+          }
+        });
 
-          formattedBookings.push({
-              id: booking.id,
-              spotId: booking.spotId,
-              Spot: {
-                  id: spot.id,
-                  ownerId: spot.ownerId,
-                  address: spot.address,
-                  city: spot.city,
-                  state: spot.state,
-                  country: spot.country,
-                  lat: spot.lat,
-                  lng: spot.lng,
-                  name: spot.name,
-                  price: spot.price,
-                  previewImage: previewImage.url
-              },
-              userId: booking.userId,
-              startDate: booking.startDate,
-              endDate: booking.endDate,
-              createdAt: booking.createdAt,
-              updatedAt: booking.updatedAt
-          })
+        formattedBookings.push({
+          id: booking.id,
+          spotId: booking.spotId,
+          Spot: {
+              id: spot.id,
+              ownerId: spot.ownerId,
+              address: spot.address,
+              city: spot.city,
+              state: spot.state,
+              country: spot.country,
+              lat: spot.lat,
+              lng: spot.lng,
+              name: spot.name,
+              price: spot.price,
+              previewImage: previewImage.url
+          },
+          userId: booking.userId,
+          startDate: booking.startDate,
+          endDate: booking.endDate,
+          createdAt: booking.createdAt,
+          updatedAt: booking.updatedAt
+        })
       }
 
       res.json({ Bookings: formattedBookings })
   } catch (error) {
-      next(error)
+    next(error)
   }
 });
 
