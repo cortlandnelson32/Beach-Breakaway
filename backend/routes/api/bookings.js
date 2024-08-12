@@ -92,20 +92,45 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res) => {
     });
   }
 
-  const { startDate, endDate } = req.body;
-  const spot = await Spot.findByPk(booking.spotId);
+const { startDate, endDate } = req.body;
 
+  // Check if the booking's end date has already passed
+  if (new Date(booking.endDate) < new Date()) {
+    return res.status(403).json({
+      message: "Past bookings can't be modified"
+    });
+  }
+
+  // Check for start date in the past
   if (new Date(startDate) < new Date()) {
     return res.status(400).json({
-      message: "Past bookings can't be modified",
+      message: "Bad Request",
+      errors: {
+        startDate: "startDate cannot be in the past"
+      }
     });
   }
 
+  // Check for end date before start date or same start & end date
   if (new Date(startDate) >= new Date(endDate)) {
     return res.status(400).json({
-      message: "End date must be after start date",
+      message: "Bad Request",
+      errors: {
+        endDate: "endDate cannot be on or before startDate"
+      }
     });
   }
+
+  if (new Date(startDate) === endDate) {
+    return res.status(400).json({
+      message: "Bad Request",
+      errors: {
+        endDate: "endDate cannot be on or before startDate"
+      }
+    });
+  }
+
+  const spot = await Spot.findByPk(booking.spotId);
 
   const otherBookings = await Booking.findAll({
     where: {
