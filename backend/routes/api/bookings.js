@@ -180,7 +180,7 @@ const { startDate, endDate } = req.body;
 //delete booking
 router.delete('/:bookingId', requireAuth, async (req, res) => {
   const { bookingId } = req.params;
-  const userId = req.user.id; // Assuming user ID is available in req.user after authentication
+  const userId = req.user.id; 
 
   try {
     // Find the booking

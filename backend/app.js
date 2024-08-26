@@ -1,4 +1,3 @@
-// backend/app.js
 const express = require('express');
 require('express-async-errors');
 const morgan = require('morgan');
@@ -23,7 +22,6 @@ if (!isProduction) {
     app.use(cors());
 }
 
-// helmet helps set a variety of headers to better secure your app
 app.use(
   helmet.crossOriginResourcePolicy({
     policy: "cross-origin"

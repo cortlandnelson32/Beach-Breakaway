@@ -333,10 +333,6 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
 
     const spot = await Spot.findByPk(spotId);
 
-    //check body validations errors
-    //check routes/api/users.js validateSignUp array to make a better validation for spots
-
-
     //check if spot exists
     if(!spot) {
         return res.status(404).json({
