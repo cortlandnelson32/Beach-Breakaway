@@ -1,6 +1,4 @@
 .signup-form {
-  background-color: #E0FFFF;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: 25px auto;
   padding: 20px;
   width: 100%;
@@ -42,6 +40,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: 10px;
 }
 
 .signup-form-button:hover {
@@ -49,11 +48,11 @@
 }
 
 .signup-form-error {
-  color: #FF7F50;
-  font-size: 0.9em;
-  margin-top: -10px;
-  margin-bottom: 15px;
-  text-align: left;
+  color: #ff385c;
+  font-weight: 600;
+  font-size: 12px;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 @media (max-width: 480px) {

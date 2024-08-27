@@ -66,7 +66,7 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.firstName} {user.lastName}</li>
+            <li>Hello, {user.firstName}</li>
             <div className='divider-horizontal'>
             </div>
             <li>{user.email}</li>

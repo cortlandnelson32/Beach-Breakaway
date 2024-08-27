@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import * as sessionActions from '../../store/session';
@@ -13,7 +13,55 @@ function SignupFormModal() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const { closeModal } = useModal();
+
+  // Reset state when the modal is opened
+  useEffect(() => {
+    setEmail("");
+    setUsername("");
+    setFirstName("");
+    setLastName("");
+    setPassword("");
+    setConfirmPassword("");
+    setErrors({});
+    setIsSubmitDisabled(true);
+  }, []);
+
+  useEffect(() => {
+    const newErrors = {};
+    if (email.length < 1) {
+      newErrors.email = "Email is required";
+    }
+    if (username.length > 0 && username.length < 4) {
+      newErrors.username = "Username must be at least 4 characters";
+    }
+    if (firstName.length < 1) {
+      newErrors.firstName = "First Name is required";
+    }
+    if (lastName.length < 1) {
+      newErrors.lastName = "Last Name is required";
+    }
+    if (password.length > 0 && password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+    if (confirmPassword.length > 0 && confirmPassword.length < 6) {
+      newErrors.confirmPassword = "Confirm Password must be at least 6 characters";
+    }
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords must match";
+    }
+    setErrors(newErrors);
+    setIsSubmitDisabled(
+      email.length < 1 ||
+      username.length < 4 ||
+      firstName.length < 1 ||
+      lastName.length < 1 ||
+      password.length < 6 ||
+      confirmPassword.length < 6 ||
+      password !== confirmPassword
+    );
+  }, [email, username, firstName, lastName, password, confirmPassword]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -113,7 +161,7 @@ function SignupFormModal() {
         {errors.confirmPassword && (
           <p className="signup-form-error">{errors.confirmPassword}</p>
         )}
-        <button type="submit" className="signup-form-button">Sign Up</button>
+        <button type="submit" className="signup-form-button" disabled={isSubmitDisabled}>Sign Up</button>
       </form>
     </>
   );

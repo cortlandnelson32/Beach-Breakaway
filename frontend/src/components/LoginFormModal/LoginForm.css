@@ -1,8 +1,7 @@
 .login-form {
-  background-color: #E0FFFF;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: 25px auto;
   padding: 20px;
+  height: 100%;
   width: 100%;
   text-align: center;
 }
@@ -42,6 +41,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: 10px;
 }
 
 .login-form-button:hover {
@@ -54,6 +54,32 @@
   margin-top: -10px;
   margin-bottom: 15px;
   text-align: left;
+}
+
+.login-form-button {
+  cursor: not-allowed;
+}
+
+.login-form-error {
+  color: #ff385c;
+  font-weight: 600;
+  font-size: 12px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.demo-user {
+  margin-top: 40px;
+}
+
+.demo-user a {
+  color: #07525D;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.demo-user a:hover {
+  font-weight: bold;
 }
 
 @media (max-width: 480px) {
