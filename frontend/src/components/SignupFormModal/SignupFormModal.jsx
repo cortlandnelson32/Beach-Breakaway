@@ -30,16 +30,16 @@ function SignupFormModal() {
 
   useEffect(() => {
     const newErrors = {};
-    if (email.length < 1) {
+    if (email.length > 0 && email.length < 2) {
       newErrors.email = "Email is required";
     }
     if (username.length > 0 && username.length < 4) {
       newErrors.username = "Username must be at least 4 characters";
     }
-    if (firstName.length < 1) {
+    if (firstName.length > 0 && firstName.length < 2) {
       newErrors.firstName = "First Name is required";
     }
-    if (lastName.length < 1) {
+    if (lastName.length > 0 && lastName.length < 2) {
       newErrors.lastName = "Last Name is required";
     }
     if (password.length > 0 && password.length < 6) {
