@@ -55,3 +55,9 @@ ul {
 a {
   text-decoration: none;
 }
+
+a.active {
+  font-family: 'Pacifico', cursive;
+  font-size: 50px;
+  color: #FF7F50;
+}
