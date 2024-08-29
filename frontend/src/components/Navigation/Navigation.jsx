@@ -12,7 +12,7 @@ function Navigation({ isLoaded }) {
   <ul>
     <li>
       <NavLink to="/">
-        <img src="/beach-logo.jpeg" alt="Beach Breakaway Logo" />
+        <img className='page-logo' rel="icon" type="image/x-icon" src="/assets/favicon.ico" alt="Beach Breakaway Logo" />
       </NavLink>
     </li>
     {isLoaded && (

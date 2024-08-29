@@ -45,10 +45,10 @@ function ProfileButton({ user }) {
     navigate('/');
   };
 
-  // const goToManageSpots = () => {
-  //   navigate('/spots/current');
-  //   closeMenu();
-  // };
+  const goToManageSpots = () => {
+    navigate('/spots/current');
+    closeMenu();
+  };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
@@ -72,6 +72,7 @@ function ProfileButton({ user }) {
             <li>{user.email}</li>
             <div className='divider-horizontal'>
             </div>
+            <li onClick={goToManageSpots}>Manage Spots</li>
             <div className='divider-horizontal'>
             </div>
             <div>

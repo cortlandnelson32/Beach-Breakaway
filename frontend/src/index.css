@@ -1,3 +1,4 @@
+/* reset page */
 * {
   margin: 0;
   padding: 0;
@@ -54,4 +55,9 @@ ul {
 
 a {
   text-decoration: none;
+}
+
+/* start styles */
+html {
+  background-color: #fdf1e3;
 }

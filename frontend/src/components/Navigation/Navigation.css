@@ -6,8 +6,12 @@ ul {
   list-style: none;
   padding: 15px;
   margin: 0;
-  border-bottom: 2px solid #F4A460;
+  border-bottom: 5px solid #3E4D76;
   font-family: 'Open Sans', sans-serif;
+}
+
+img.page-logo {
+  height: 80px;
 }
 
 li {

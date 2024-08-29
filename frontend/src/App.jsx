@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Navigation from './components/Navigation/Navigation';
 import Homepage from './components/Homepage/Homepage'
+import SpotDetailsPage from './components/SpotDetailsPage/SpotDetailsPage'
 import * as sessionActions from './store/session';
 import './index.css';
 
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Homepage />
+      },
+      {
+        path: "/spots/:spotId",
+        element: <SpotDetailsPage />,
       },
     ]
   }
