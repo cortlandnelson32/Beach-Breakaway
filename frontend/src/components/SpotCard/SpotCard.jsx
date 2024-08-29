@@ -30,28 +30,30 @@ function SpotCard({ spot }) {
         avgRating = spot.avgRating.toFixed(1).toString();
 
     return (
-        <div className="spot-card" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
+        <div className="spot-card-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          <div className="spot-card">
             <div className="img">
-                <img className='spot-image' src={spot.previewImage} alt='main-image'></img>
-            </div>
-            <div className="spot-data">
-                <div className="left-panel">
-                    <span>{spot.city}, {spot.state}</span>
-                    <div className="price">
-                        <span id="price">${spot.price}</span>
-                        <span> night</span>
-                    </div>
-                </div>
-                <div className="right-panel">
-                    <FaStar className="star" />
-                    <span>{avgRating}</span>
-                </div>
+              <img className="spot-image" src={spot.previewImage} alt="main-image" />
             </div>
             <div className={`tooltip ${showTooltip ? 'show' : 'hide'}`}>
-                {spot.name}
+              {spot.name}
             </div>
+          </div>
+          <div className="spot-data">
+            <div className="left-panel">
+              <span>{spot.city}, {spot.state}</span>
+              <div className="price">
+                <span id="price">${spot.price}</span>
+                <span> night</span>
+              </div>
+            </div>
+            <div className="right-panel">
+              <FaStar className="star" />
+              <span>{avgRating}</span>
+            </div>
+          </div>
         </div>
-    )
+      );
 }
 
 export default SpotCard;
