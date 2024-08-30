@@ -49,7 +49,7 @@ function SpotCard({ spot }) {
             </div>
             <div className="right-panel">
               <FaStar className="star" />
-              <span>{avgRating}</span>
+              <span> {avgRating} </span>
             </div>
           </div>
         </div>

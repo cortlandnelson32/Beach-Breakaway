@@ -1,7 +1,7 @@
 
 ul {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   list-style: none;
   padding: 15px;
@@ -20,8 +20,8 @@ li {
 
 a {
   text-decoration: none;
-  color: #FF7F50; 
-  font-size: 30px;
+  color: rgba(0, 0, 0, 0.1); 
+  font-size: 20px;
   transition: color 0.3s ease;
 }
 
@@ -61,4 +61,18 @@ a:hover {
 
 .profile-button a:hover {
   color: #FF7F50; 
+}
+
+.create-spot {
+  color: #3E4A76;
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.right-side {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
 }
