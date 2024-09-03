@@ -1,5 +1,5 @@
 import Stars from './Stars';
-// import './SpotDetailsPage.css'
+import './SpotDetailsPage.css'
 
 function ReviewCard({ review }) {
 

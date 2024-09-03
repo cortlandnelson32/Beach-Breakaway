@@ -5,6 +5,8 @@ import Navigation from './components/Navigation/Navigation';
 import Homepage from './components/Homepage/Homepage'
 import SpotDetailsPage from './components/SpotDetailsPage/SpotDetailsPage'
 import CreateSpotPage from './components/CreateSpotPage/CreateSpotPage';
+import ManageSpots from './components/ManageSpots/ManageSpots';
+import UpdateSpot from './components/UpdateSpot/UpdateSpot';
 import PageNotFound from './components/PageNotFound/PageNotFound';
 import * as sessionActions from './store/session';
 import './index.css';
@@ -42,6 +44,18 @@ const router = createBrowserRouter([
       {
         path: '/spots/new',
         element: <CreateSpotPage />
+      },
+      {
+        path: '/spots/current',
+        element: <ManageSpots />
+      },
+      {
+        path: '/spots/:spotId/edit',
+        element: <UpdateSpot />
+      },
+      {
+        path: '/404',
+        element: <PageNotFound />
       },
       {
         path: '*',

@@ -18,7 +18,7 @@ function ProfileButton({ user }) {
   const navigate = useNavigate();
 
   const toggleMenu = (e) => {
-    e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
+    e.stopPropagation(); 
     setShowMenu(!showMenu);
   };
 
@@ -50,6 +50,11 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
+  // const goToManageReviews = () => {
+  //   navigate('/spots/current');
+  //   closeMenu();
+  // };
+
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
@@ -67,14 +72,13 @@ function ProfileButton({ user }) {
         {user ? (
           <>
             <li>Hello, {user.firstName}</li>
-            <div className='divider-horizontal'>
-            </div>
+            <div className='divider-horizontal'></div>
             <li>{user.email}</li>
-            <div className='divider-horizontal'>
-            </div>
+            <div className='divider-horizontal'></div>
             <li onClick={goToManageSpots}>Manage Spots</li>
             <div className='divider-horizontal'>
             </div>
+            {/* <li onClick={goToManageReviews}>Manage Reviews</li> */}
             <div>
               <button onClick={logout}>Logout</button>
             </div>

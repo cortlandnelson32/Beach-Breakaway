@@ -40,7 +40,8 @@ function LoginFormModal() {
       .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) {
-          setErrors(data.errors);
+          setErrors({ ...data.errors, general: "The provided credentials were invalid" });
+          setIsButtonDisabled(false);
         }
       });
   };
@@ -54,6 +55,9 @@ function LoginFormModal() {
   return (
     <>
       <h1 className="login-form-title">Log In</h1>
+      {errors.general && (
+          <p className="login-form-error">{errors.general}</p>
+      )}
       <form className="login-form" onSubmit={handleSubmit}>
         <label className="login-form-label">
           Username or Email

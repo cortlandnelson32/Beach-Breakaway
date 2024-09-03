@@ -10,9 +10,9 @@ import { FaPen, FaTrashCan } from "react-icons/fa6";
 
 import './SpotDetailsPage.css';
 import ReviewCard from "./ReviewCard";
-// import PostReviewModal from "../PostReviewModal/PostReviewModal";
-// import ConfirmDeleteReviewModal from "../ConfirmDeleteReviewModal";
-// import EditReviewModal from "../EditReviewModal";
+import PostReviewModal from "../ReviewFormModal/PostReviewModal";
+import DeleteFormReview from "../ReviewFormModal/DeleteFormReview";
+import EditReviewModal from "../ReviewFormModal/EditReviewFormModal";
 // import ImageSlider from "../ImageSlider";
 // import PageNotFound from "../PageNotFound";
 
@@ -129,7 +129,6 @@ function SpotDetails() {
                             </div>
                             <div className="num-reviews">
                                 {spot.numReviews !== 0 ? spot.numReviews === 1 ? <span>{spot.numReviews} review</span> : <span>{spot.numReviews} reviews</span> : <span></span>}
-                                {/* {spot.numReviews !== 0 ? <span>{spot.numReviews} reviews</span> : <div></div>} */}
                             </div>
                         </div>
                     </div>
@@ -156,10 +155,10 @@ function SpotDetails() {
                             <div className="post-review-button">
                                 <OpenModalMenuItem
                                     itemText="Post your Review"
-                                    // modalComponent={<PostReviewModal setReviewChecker={setReviewChecker} spotId={parseInt(spotId)} onModalClose={() => {
-                                    //     onModalClose;
-                                    //     // setReviewChecker(false);
-                                    // }} />}
+                                    modalComponent={<PostReviewModal setReviewChecker={setReviewChecker} spotId={parseInt(spotId)} onModalClose={() => {
+                                        onModalClose;
+                                        // setReviewChecker(false);
+                                    }} />}
                                 // addReview={addReview} // Pass addReview function to PostReviewModal
                                 />
                             </div> :
@@ -178,33 +177,31 @@ function SpotDetails() {
             </div>
             <div className="reviews-container">
                 {
-                    spot.numReviews === 0 && sessionUser !== null && sessionUser.id !== spot.ownerId
-                        ? <span className="be-the-first">Be the first to post a review!</span>
-                        : ''
+                spot.numReviews === 0 && sessionUser !== null && sessionUser.id !== spot.ownerId
+                    ? <span className="be-the-first">Be the first to post a review!</span>
+                    : ''
                 }
                 {spot.numReviews === 0 ? (
                     <div></div>
                 ) : (
                     reviews.map((review) => {
-                        // console.log("REVIEW", review);
                         return (
                             <div className="review-and-button" key={review.id}>
                                 <ReviewCard key={review.id} review={review} />
-                                {
-                                    user && (review.User.id === user.id) ?
+                                    {user && (review.User.id === user.id) ?
                                         <div className="crud-buttons-container" key={review.id}>
                                             <button className="edit-review-button" key={review.id}>
                                                 <FaPen />
                                                 <OpenModalMenuItem
                                                     itemText={"Edit"}
-                                                    // modalComponent={<EditReviewModal review={review} setReviewEditChecker={setDeleteReviewChecker} />}
+                                                    modalComponent={<EditReviewModal review={review} setReviewEditChecker={setDeleteReviewChecker} />}
                                                 />
                                             </button>
                                             <button className="delete-review-button" key={review.id}>
                                                 <FaTrashCan />
                                                 <OpenModalMenuItem
                                                     itemText={"Delete"}
-                                                    // modalComponent={<ConfirmDeleteReviewModal reviewId={review.id} setDeleteReviewChecker={setDeleteReviewChecker} />}
+                                                    modalComponent={<DeleteFormReview reviewId={review.id} setDeleteReviewChecker={setDeleteReviewChecker} />}
                                                     onModalClose={async () => {
                                                         await onDeleteModalClose
                                                     }}
