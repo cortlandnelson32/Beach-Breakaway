@@ -50,10 +50,10 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
-  // const goToManageReviews = () => {
-  //   navigate('/spots/current');
-  //   closeMenu();
-  // };
+  const goToManageReviews = () => {
+    navigate('/spots/current');
+    closeMenu();
+  };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
@@ -78,7 +78,7 @@ function ProfileButton({ user }) {
             <li onClick={goToManageSpots}>Manage Spots</li>
             <div className='divider-horizontal'>
             </div>
-            {/* <li onClick={goToManageReviews}>Manage Reviews</li> */}
+            <li onClick={goToManageReviews}>Manage Reviews</li>
             <div>
               <button onClick={logout}>Logout</button>
             </div>

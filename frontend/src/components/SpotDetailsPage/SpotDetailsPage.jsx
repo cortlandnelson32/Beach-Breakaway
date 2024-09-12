@@ -13,28 +13,23 @@ import ReviewCard from "./ReviewCard";
 import PostReviewModal from "../ReviewFormModal/PostReviewModal";
 import DeleteFormReview from "../ReviewFormModal/DeleteFormReview";
 import EditReviewModal from "../ReviewFormModal/EditReviewFormModal";
-// import ImageSlider from "../ImageSlider";
-// import PageNotFound from "../PageNotFound";
 
 function SpotDetails() {
     const dispatch = useDispatch();
-    // const navigate = useNavigate()
     const { spotId } = useParams();
     const sessionUser = useSelector(state => state.session.user);
-    const [showReviews, setShowReviews] = useState(false);
     const [reviewChecker, setReviewChecker] = useState(false);
     const [deleteReviewChecker, setDeleteReviewChecker] = useState(false);
 
     useEffect(() => {
         dispatch(loadSpotThunk(parseInt(spotId)));
         dispatch(getAllReviewsThunk(parseInt(spotId)))
-            .then(() => setShowReviews(true))
             .then(() => setDeleteReviewChecker(false));
     }, [dispatch, spotId, reviewChecker, deleteReviewChecker]);
 
     const spot = useSelector((state) => state.spots.spot);
     const reviews = useSelector((state) => state.reviews.allReviews);
-    const user = useSelector((state) => state.session.user)
+    const user = useSelector((state) => state.session.user);
 
     const onModalClose = () => {
         setReviewChecker(false);
@@ -42,7 +37,6 @@ function SpotDetails() {
     };
 
     if (!spot) {
-        
         return (
             <div className="loading-spot">
                 <img
@@ -76,9 +70,7 @@ function SpotDetails() {
         setDeleteReviewChecker(prev => !prev);
     }
 
-
-    return showReviews ? (
-
+    return (
         <div className="spot-details">
             <div className="header">
                 <h1>{spot.name}</h1>
@@ -157,9 +149,7 @@ function SpotDetails() {
                                     itemText="Post your Review"
                                     modalComponent={<PostReviewModal setReviewChecker={setReviewChecker} spotId={parseInt(spotId)} onModalClose={() => {
                                         onModalClose;
-                                        // setReviewChecker(false);
                                     }} />}
-                                // addReview={addReview} // Pass addReview function to PostReviewModal
                                 />
                             </div> :
                             sessionUser === null &&
@@ -173,6 +163,7 @@ function SpotDetails() {
                                 />
                             </div>
                     }
+                
                 </div>
             </div>
             <div className="reviews-container">
@@ -217,9 +208,7 @@ function SpotDetails() {
                 )}
             </div>
         </div>
-    ) : (
-        <></>
-    )
+    );
 }
 
 export default SpotDetails;
