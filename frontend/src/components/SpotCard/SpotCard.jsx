@@ -24,8 +24,8 @@ function SpotCard({ spot }) {
         }
     }, [timer]);
 
-    let avgRating = "New!";
-
+    // let avgRating = "New!";
+    let avgRating = "";
     if (spot.avgRating)
         avgRating = spot.avgRating.toFixed(1).toString();
 
@@ -44,7 +44,7 @@ function SpotCard({ spot }) {
               <span>{spot.city}, {spot.state}</span>
               <div className="price">
                 <span id="price">${spot.price}</span>
-                <span> night</span>
+                <span> / night</span>
               </div>
             </div>
             <div className="right-panel">

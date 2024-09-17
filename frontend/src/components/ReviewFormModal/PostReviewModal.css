@@ -5,7 +5,7 @@
 }
 
 .post-review-form {
-  background: white;
+  background: #E0FFFF;
   border-radius: 10px;
   padding: 20px;
   width: 100%;
@@ -15,7 +15,7 @@
 .post-review-form h1 {
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
-  color: #ff375d;
+  color: #FF7F50;
 }
 
 .post-review-form p {
@@ -31,6 +31,7 @@
 .review-input {
   font-family: Arial, Helvetica, sans-serif;
   height: 150px;
+  width: 100%;
   resize: vertical; 
   padding: 10px;
   margin-top: 10px;
@@ -55,18 +56,18 @@
 .post-reviewstar {
   font-size: 30px;
   cursor: pointer;
-  color: #ff385c; 
+  color: #FF7F50; 
   margin: 0 5px;
 }
 
 .star:hover {
-  color: #ff385c;
+  color: #FF7F50;
 }
 
 .post-review-button {
   width: 100%;
   padding: 15px;
-  background-color: #ff385c; 
+  background-color: #FF7F50; 
   border: none;
   border-radius: 5px;
   color: white;
@@ -81,7 +82,7 @@
 }
 
 .post-review-button:not(:disabled):hover {
-  background-color: #e31e4d;
+  background-color: #FF7F50;
 }
 
 

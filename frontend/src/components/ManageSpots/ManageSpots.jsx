@@ -48,12 +48,8 @@ function ManageSpots() {
         return navigate(`/spots/${spot.id}`);
     }
 
-    // if (!user || mySpots[0]?.ownerId !== user.id) {
-    //     // return navigate('/');
-    // }
-
     const onModalClose = () => {
-        setSpotChecker(prev => !prev); // Toggle spotChecker to trigger useEffect
+        setSpotChecker(prev => !prev); 
     };
 
     return (

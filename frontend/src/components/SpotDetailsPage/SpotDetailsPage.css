@@ -160,7 +160,7 @@
 
 .reserve-button {
   padding: 15px 130px;
-  background-color: #ff5a5f;
+  background-color: #FF7F50;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -414,12 +414,12 @@
 }
 
 .log-in-to-review li {
-  color: #ff5a5f;
+  color: #FF7F50;
   font-size: 16px;
 }
 
 .log-in-to-review li:hover {
-  color: #e5454b;
+  color: #FF7F50;
   font-size: 16px;
 }
 
