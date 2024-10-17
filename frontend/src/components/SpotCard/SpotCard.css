@@ -26,6 +26,10 @@
   width: 300px;
 }
 
+.spot-card-container{
+  width: 300px;
+}
+
 .img {
   width: 100%;
   display: flex;
