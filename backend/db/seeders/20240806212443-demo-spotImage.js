@@ -63,13 +63,38 @@ module.exports = {
       },
       {
         spotId: 6,
-        url: "https://mansioncollection.com/files/2023/03/LB.jpeg",
+        url: "https://lh4.googleusercontent.com/proxy/M9Knkkgokl-iqdmrmzlH-8bQk8qDCZ0BpA-Qa3-tlnV5qHjBmMW7J08WUS4BuIEmj425a9By5icMbW5P9dxXRBUjbd76o6BvzrIUj5hrJTwyPC6hZJefgtExVA",
+        preview: false
+      },
+      {
+        spotId: 7,
+        url: "https://static1.mansionglobal.com/production/media/article-images/58c8b1858e6b1460f1a653fcefc5e5c1/large_SantaMonica2.jpg",
         preview: true
       },
       {
-        spotId: 6,
-        url: "https://lh4.googleusercontent.com/proxy/M9Knkkgokl-iqdmrmzlH-8bQk8qDCZ0BpA-Qa3-tlnV5qHjBmMW7J08WUS4BuIEmj425a9By5icMbW5P9dxXRBUjbd76o6BvzrIUj5hrJTwyPC6hZJefgtExVA",
-        preview: false
+        spotId: 8,
+        url: "https://cdn.listingphotos.sierrastatic.com/pics2x/v1720462091/75/75_1123542_01.jpg",
+        preview: true
+      },
+      {
+        spotId: 9,
+        url: "https://track-pm.s3.amazonaws.com/sandnsea/image/4fc43844-bea6-4b19-850c-734de0459caf",
+        preview: true
+      },
+      {
+        spotId: 10,
+        url: "https://example.com/clearwater-beach-condo2.jpg",
+        preview: true
+      },
+      {
+        spotId: 11,
+        url: "https://www.naplesrealestate.com/wp-content/uploads/2017/03/slider3.jpg",
+        preview: true
+      },
+      {
+        spotId: 12,
+        url: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/419208402.jpg?k=02cfac88b840a8bad330ae7b1550d3a9cc8cf8f58811eb8357e7e21a09d9b109&o=&hp=1",
+        preview: true
       }
     ], { validate: true });
   },
