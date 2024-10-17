@@ -130,12 +130,12 @@ module.exports = {
       {
         ownerId: 5,
         address: '707 Sunlit Ave',
-        city: 'Clearwater Beach',
+        city: 'Treasure Island Beach',
         state: 'Florida',
         country: 'United States',
         lat: 27.9774,
         lng: -82.8279,
-        name: 'Clearwater Beach Condo',
+        name: 'Treasure Island Beachfront',
         description: 'A sunlit condo with stunning Gulf views',
         price: 240.00,
         avgRating: 4.5

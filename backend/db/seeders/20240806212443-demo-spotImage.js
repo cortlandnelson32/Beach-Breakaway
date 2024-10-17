@@ -64,7 +64,7 @@ module.exports = {
       {
         spotId: 6,
         url: "https://lh4.googleusercontent.com/proxy/M9Knkkgokl-iqdmrmzlH-8bQk8qDCZ0BpA-Qa3-tlnV5qHjBmMW7J08WUS4BuIEmj425a9By5icMbW5P9dxXRBUjbd76o6BvzrIUj5hrJTwyPC6hZJefgtExVA",
-        preview: false
+        preview: true
       },
       {
         spotId: 7,
@@ -83,7 +83,7 @@ module.exports = {
       },
       {
         spotId: 10,
-        url: "https://example.com/clearwater-beach-condo2.jpg",
+        url: "https://qa-ap.rdcpix.com/96e9cf7f799ef42cca78fcc2f7471bf0l-m3783786741rd-w480_h360.jpg",
         preview: true
       },
       {

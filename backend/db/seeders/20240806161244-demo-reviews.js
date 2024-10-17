@@ -41,6 +41,48 @@ module.exports = {
         spotId: 3,
         review: "Disappointed with the amenities.",
         stars: 2,
+      },
+      {
+        userId: 4,
+        spotId: 6,
+        review: "Great location, but a bit noisy.",
+        stars: 3,
+      },
+      {
+        userId: 1,
+        spotId: 7,
+        review: "Amazing host, highly recommend!",
+        stars: 4,
+      },
+      {
+        userId: 3,
+        spotId: 8,
+        review: "Place was clean and comfortable.",
+        stars: 4,
+      },
+      {
+        userId: 2,
+        spotId: 9,
+        review: "Disappointed with the amenities.",
+        stars: 2,
+      },
+      {
+        userId: 1,
+        spotId: 10,
+        review: "Loved the beach view and sunny mornings!",
+        stars: 4,
+      },
+      {
+        userId: 2,
+        spotId: 11,
+        review: "A lovely place with breathtaking sunsets.",
+        stars: 5,
+      },
+      {
+        userId: 3,
+        spotId: 12,
+        review: "Truly a tropical paradise, highly recommended!",
+        stars: 5,
       }
     ], { validate: true });
   },
