@@ -1,11 +1,9 @@
 'use strict';
-
 const { Spot } = require('../models');
-
 let options = {};
-options.tableName = 'Spots'
+options.tableName = 'Spots';
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA; 
+  options.schema = process.env.SCHEMA;
 }
 
 /** @type {import('sequelize-cli').Migration} */
@@ -14,73 +12,86 @@ module.exports = {
     await Spot.bulkCreate([
       {
         ownerId: 1,
-        address: '123 Main St',
-        city: 'San Francisco',
-        state: 'California',
+        address: '123 Beachside Blvd',
+        city: 'Miami',
+        state: 'Florida',
         country: 'United States',
-        lat: 37.7749,
-        lng: -122.4194,
-        name: 'Cozy Apartment',
-        description: 'A charming apartment in the heart of San Francisco',
-        price: 150.00,
-        avgRating: 4.2
+        lat: 25.7617,
+        lng: -80.1918,
+        name: 'Oceanfront Paradise',
+        description: 'A beautiful beach house with stunning ocean views',
+        price: 250.00,
+        avgRating: 4.9
       },
       {
         ownerId: 2,
-        address: '456 Elm St',
-        city: 'Los Angeles',
+        address: '456 Coastal Rd',
+        city: 'Malibu',
         state: 'California',
         country: 'United States',
-        lat: 34.0522,
-        lng: -118.2437,
-        name: 'Beachfront House',
-        description: 'Luxurious beachfront house with stunning views',
-        price: 300.00,
+        lat: 34.0259,
+        lng: -118.7798,
+        name: 'Malibu Beach House',
+        description: 'A luxurious house right on the Malibu beach',
+        price: 500.00,
         avgRating: 4.8
       },
       {
         ownerId: 3,
-        address: '789 Oak St',
-        city: 'New York',
-        state: 'New York',
+        address: '789 Shoreline Dr',
+        city: 'Honolulu',
+        state: 'Hawaii',
         country: 'United States',
-        lat: 40.7128,
-        lng: -74.0060,
-        name: 'Modern Loft',
-        description: 'Stylish loft in the heart of New York City',
-        price: 250.00,
-        avgRating: 4.5
+        lat: 21.3069,
+        lng: -157.8583,
+        name: 'Tropical Getaway',
+        description: 'A serene retreat in the heart of Honolulu',
+        price: 400.00,
+        avgRating: 4.7
       },
       {
         ownerId: 4,
-        address: '101 Pine St',
-        city: 'Seattle',
-        state: 'Washington',
+        address: '101 Beach Ave',
+        city: 'Myrtle Beach',
+        state: 'South Carolina',
         country: 'United States',
-        lat: 47.6062,
-        lng: -122.3321,
-        name: 'Cozy Cabin',
-        description: 'Charming cabin in the woods',
-        price: 120.00,
-        avgRating: 4.3
+        lat: 33.6891,
+        lng: -78.8867,
+        name: 'Sunny Beachside Condo',
+        description: 'A cozy condo with direct beach access',
+        price: 200.00,
+        avgRating: 4.5
       },
       {
         ownerId: 5,
-        address: '202 Cedar St',
-        city: 'Austin',
-        state: 'Texas',
+        address: '202 Ocean Dr',
+        city: 'Virginia Beach',
+        state: 'Virginia',
         country: 'United States',
-        lat: 30.2672,
-        lng: -97.7431,
-        name: 'Hip Apartment',
-        description: 'Trendy apartment in the heart of Austin',
+        lat: 36.8529,
+        lng: -75.9780,
+        name: 'Seaside Escape',
+        description: 'A perfect spot for a family vacation by the sea',
         price: 180.00,
+        avgRating: 4.6
+      },
+      {
+        ownerId: 6,
+        address: '303 Beachfront Ln',
+        city: 'Laguna Beach',
+        state: 'California',
+        country: 'United States',
+        lat: 33.5427,
+        lng: -117.7854,
+        name: 'Laguna Beach Cottage',
+        description: 'A charming cottage with breathtaking views',
+        price: 350.00,
         avgRating: 4.7
       }
     ], { validate: true });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {}, {});
