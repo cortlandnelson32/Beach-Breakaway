@@ -11,7 +11,10 @@ function Navigation({ isLoaded }) {
     <ul>
       <li>
         <NavLink to="/">
+          <span className='left-logo'>
           <img className='page-logo' rel="icon" type="image/x-icon" src="/assets/favicon.ico" alt="Beach Breakaway Logo" />
+          <h1>Beach Breakaway</h1>
+          </span>
         </NavLink>
       </li>
       {isLoaded && (
@@ -20,8 +23,6 @@ function Navigation({ isLoaded }) {
         {sessionUser && (
           <NavLink to='/spots/new' className='create-spot'>Create a Spot</NavLink>
         )}
-        {/* <NavLink to='/spots/new' className='create-spot'>Create a Spot</NavLink> */}
-        {/* <CreateSpotPage to='/spots/new' className='create-spot'>Create a Spot</CreateSpotPage> */}
         <ProfileButton user={sessionUser} />
         </div>
       </li>
