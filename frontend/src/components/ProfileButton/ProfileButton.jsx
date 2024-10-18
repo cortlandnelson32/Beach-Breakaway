@@ -50,10 +50,16 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
-  const goToManageReviews = () => {
-    navigate('/spots/current');
-    closeMenu();
-  };
+  // const goToManageReviews = () => {
+  //   navigate('/spots/current');
+  //   closeMenu();
+  // };
+
+  const handleOnClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.alert("Feature Coming Soon...");
+};
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
@@ -77,7 +83,7 @@ function ProfileButton({ user }) {
             <div className='divider-horizontal'></div>
             <li onClick={goToManageSpots}>Manage Spots</li>
             <div className='divider-horizontal'></div>
-            <li onClick={goToManageReviews}>Manage Reviews</li>
+            <li onClick={(e) => handleOnClick(e)}>Manage Reviews</li>
             <div className='divider-horizontal'></div>
             <div>
               <button onClick={logout}>Logout</button>
