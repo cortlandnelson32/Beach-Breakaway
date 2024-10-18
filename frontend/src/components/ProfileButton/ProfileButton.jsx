@@ -76,9 +76,9 @@ function ProfileButton({ user }) {
             <li>{user.email}</li>
             <div className='divider-horizontal'></div>
             <li onClick={goToManageSpots}>Manage Spots</li>
-            <div className='divider-horizontal'>
-            </div>
+            <div className='divider-horizontal'></div>
             <li onClick={goToManageReviews}>Manage Reviews</li>
+            <div className='divider-horizontal'></div>
             <div>
               <button onClick={logout}>Logout</button>
             </div>

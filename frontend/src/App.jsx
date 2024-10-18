@@ -8,6 +8,7 @@ import CreateSpotPage from './components/CreateSpotPage/CreateSpotPage';
 import ManageSpots from './components/ManageSpots/ManageSpots';
 import UpdateSpot from './components/UpdateSpot/UpdateSpot';
 import PageNotFound from './components/PageNotFound/PageNotFound';
+import Footer from './components/Footer/Footer'
 import * as sessionActions from './store/session';
 import './index.css';
 
@@ -66,7 +67,13 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+    <RouterProvider router={router} />
+    <Footer/>
+    </>
+  )
+
 }
 
 export default App;

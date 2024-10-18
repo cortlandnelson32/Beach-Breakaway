@@ -177,6 +177,7 @@ function SpotDetails() {
                     reviews.map((review) => {
                         return (
                             <div className="review-and-button" key={review.id}>
+                                <div className='divider-horizontal'></div>
                                 <ReviewCard key={review.id} review={review} />
                                     {user && (review.User.id === user.id) ?
                                         <div className="crud-buttons-container" key={review.id}>
@@ -200,7 +201,6 @@ function SpotDetails() {
                                         </div> :
                                         ''
                                 }
-                                <div className='divider-horizontal'></div>
                             </div>
                         )
                     })

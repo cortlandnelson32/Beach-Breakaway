@@ -1,0 +1,24 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 30px;
+  padding-top: 20px;
+  border-top: 2px solid;
+}
+
+.footer-right {
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+  font-size: 30px;
+  padding-right: 45px;
+  border-top: #3B4B70;
+  color: #3B4B70;
+}
+
+.footer-left{
+  display: flex;
+  justify-content: start;
+  color: #3B4B70;
+  padding-left: 45px;
+}
