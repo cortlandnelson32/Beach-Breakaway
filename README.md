@@ -1,4 +1,4 @@
-# AirBnB
+# Beach Breakaway
 
 ## Database Schema Design
 
