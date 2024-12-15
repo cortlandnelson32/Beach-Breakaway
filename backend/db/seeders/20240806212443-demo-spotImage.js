@@ -53,17 +53,12 @@ module.exports = {
       },
       {
         spotId: 5,
-        url: "https://www.vrbo.com/vacation-ideas/wp-content/uploads/2Ei70JjRPlg6xo9oVKGMPD/276614e5a2420023afba1e24fcfefbd0/eb80f7f9-d590-4523-a4ea-63f1a0f18c22.lg1.jpg",
+        url: "https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,q_75,w_1200/v1/crm/virginiabeachva/lynnhavennight_938F02A8-CA18-42A6-A801D8914A6C0E1F_560d82af-f118-4939-bb4899a7cf08e142.jpg",
         preview: true
       },
       {
-        spotId: 5,
-        url: "https://www.siebert-realty.com/units/phpthumb/cache//0/01/017/017d/phpThumb_cache_siebert-realty.com__src017d7e3bd199007003ca53326f946e17_parb78e39383262eea4c9cd127de87f58b1_dat1694462023.jpeg",
-        preview: false
-      },
-      {
         spotId: 6,
-        url: "https://lh4.googleusercontent.com/proxy/M9Knkkgokl-iqdmrmzlH-8bQk8qDCZ0BpA-Qa3-tlnV5qHjBmMW7J08WUS4BuIEmj425a9By5icMbW5P9dxXRBUjbd76o6BvzrIUj5hrJTwyPC6hZJefgtExVA",
+        url: "https://learncalifornia.org/wp-content/uploads/2023/12/luxury-homes-for-sale-laguna-beach-1024x585.jpg",
         preview: true
       },
       {
