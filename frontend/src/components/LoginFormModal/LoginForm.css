@@ -7,10 +7,9 @@
 }
 
 .login-form-title {
-  font-family: 'Pacifico', cursive;
   font-size: 50px;
   color: #FF7F50;
-  margin-bottom: 20px;
+  margin-top: 20px;
   text-align: center;
 }
 
@@ -33,19 +32,62 @@
 }
 
 .login-form-button {
-  background-color: #FF7F50;
-  color: #ffffff;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #FF7F50 0%, #F4A460 100%);
+  color: #fff;
   border: none;
-  padding: 10px 20px;
-  font-size: 1.2em;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 10px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(255, 127, 80, 0.3);
+  margin: 10px auto 0; 
+  width: fit-content; 
 }
 
 .login-form-button:hover {
-  background-color: #F4A460;
+  background: linear-gradient(135deg, #F4A460 0%, #FF7F50 100%);
+  box-shadow: 0 6px 16px rgba(255, 127, 80, 0.4);
+  transform: translateY(-2px);
+}
+
+.login-form-button:active {
+  transform: translateY(0);
+}
+
+/* Password Input with Toggle */
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper .login-form-input {
+  padding-right: 45px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #666;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: #333;
 }
 
 .login-form-error {

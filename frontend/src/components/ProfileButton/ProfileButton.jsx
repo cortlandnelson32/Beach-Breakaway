@@ -50,11 +50,6 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
-  // const goToManageReviews = () => {
-  //   navigate('/spots/current');
-  //   closeMenu();
-  // };
-
   const handleOnClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -86,7 +81,7 @@ function ProfileButton({ user }) {
             <li onClick={(e) => handleOnClick(e)}>Manage Reviews</li>
             <div className='divider-horizontal'></div>
             <div>
-              <button onClick={logout}>Logout</button>
+              <button className="logout-button" onClick={logout}>Logout</button>
             </div>
           </>
         ) : (

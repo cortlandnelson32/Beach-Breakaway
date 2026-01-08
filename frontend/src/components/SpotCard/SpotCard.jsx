@@ -1,59 +1,119 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import { FaStar } from 'react-icons/fa';
 import './SpotCard.css';
 
 function SpotCard({ spot }) {
-    const [showTooltip, setShowTooltip] = useState(false);
-    const [timer, setTimer] = useState(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const timerRef = useRef(null);
 
-    const handleMouseEnter = () => {
-        const newTimer = setTimeout(() => {
-            setShowTooltip(true);
-        }, 500);
-        setTimer(newTimer);
+  const handleMouseEnter = () => {
+    timerRef.current = setTimeout(() => {
+      setShowTooltip(true);
+    }, 500);
+  };
+
+  const handleMouseLeave = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    setShowTooltip(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
     };
+  }, []);
 
-    const handleMouseLeave = () => {
-        clearTimeout(timer);
-        setShowTooltip(false);
-    };
+  // Format rating to always show one decimal
+  const formatRating = (rating) => {
+    if (!rating) return "New";
+    return Number(rating).toFixed(1);
+  };
 
-    useEffect(() => {
-        return () => {
-            clearTimeout(timer);
-        }
-    }, [timer]);
+  // Format price with proper comma separation
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price).replace('$', '');
+  };
 
-    // let avgRating = "New!";
-    let avgRating = "";
-    if (spot.avgRating)
-        avgRating = spot.avgRating.toFixed(1).toString();
+  const avgRating = formatRating(spot.avgRating);
+  const formattedPrice = formatPrice(spot.price);
 
-    return (
-        <div className="spot-card-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-          <div className="spot-card">
-            <div className="img">
-              <img className="spot-image" src={spot.previewImage} alt="main-image" />
+  return (
+    <article 
+      className="spot-card-container" 
+      onMouseEnter={handleMouseEnter} 
+      onMouseLeave={handleMouseLeave}
+      aria-label={`${spot.name} in ${spot.city}, ${spot.state}`}
+    >
+      <div className="spot-card">
+        <div className="spot-image-container">
+          {!imageLoaded && !imageError && (
+            <div className="image-skeleton" aria-label="Loading image" />
+          )}
+          <img 
+            className={`spot-image ${imageLoaded ? 'loaded' : ''}`}
+            src={spot.previewImage} 
+            alt={`${spot.name} - ${spot.city}, ${spot.state}`}
+            loading="lazy"
+            onLoad={() => setImageLoaded(true)}
+            onError={() => {
+              setImageError(true);
+              setImageLoaded(true);
+            }}
+          />
+          {imageError && (
+            <div className="image-error">
+              <span>📷</span>
+              <p>Image unavailable</p>
             </div>
-            <div className={`tooltip ${showTooltip ? 'show' : 'hide'}`}>
-              {spot.name}
-            </div>
-          </div>
-          <div className="spot-data">
-            <div className="left-panel">
-              <span>{spot.city}, {spot.state}</span>
-              <div className="price">
-                <span id="price">${spot.price}</span>
-                <span> / night</span>
-              </div>
-            </div>
-            <div className="right-panel">
-              <FaStar className="star" />
-              <span> {avgRating} </span>
-            </div>
+          )}
+          <div className={`tooltip ${showTooltip ? 'show' : 'hide'}`} role="tooltip">
+            {spot.name}
           </div>
         </div>
-      );
+      </div>
+      
+      <div className="spot-data">
+        <div className="left-panel">
+          <div className="location">
+            <span className="location-text">{spot.city}, {spot.state}</span>
+          </div>
+          <div className="price">
+            <span className="price-amount">${formattedPrice}</span>
+            <span className="price-period"> / night</span>
+          </div>
+        </div>
+        <div className="right-panel">
+          <div className="rating">
+            <FaStar className="star" aria-hidden="true" />
+            <span className="rating-value">{avgRating}</span>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
 }
 
-export default SpotCard;
+// Memoize to prevent unnecessary re-renders
+const arePropsEqual = (prevProps, nextProps) => {
+  return (
+    prevProps.spot.id === nextProps.spot.id &&
+    prevProps.spot.avgRating === nextProps.spot.avgRating &&
+    prevProps.spot.previewImage === nextProps.spot.previewImage &&
+    prevProps.spot.price === nextProps.spot.price
+  );
+};
+
+const MemoizedSpotCard = memo(SpotCard, arePropsEqual);
+
+export default MemoizedSpotCard;

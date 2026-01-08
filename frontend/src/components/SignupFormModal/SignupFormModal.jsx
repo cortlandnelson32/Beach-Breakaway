@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import * as sessionActions from '../../store/session';
@@ -14,6 +14,9 @@ function SignupFormModal() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { closeModal } = useModal();
 
   // Reset state when the modal is opened
@@ -26,6 +29,7 @@ function SignupFormModal() {
     setConfirmPassword("");
     setErrors({});
     setIsSubmitDisabled(true);
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -63,11 +67,21 @@ function SignupFormModal() {
     );
   }, [email, username, firstName, lastName, password, confirmPassword]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    if (password === confirmPassword) {
-      setErrors({});
-      return dispatch(
+    
+    if (password !== confirmPassword) {
+      setErrors({
+        confirmPassword: "Passwords must match"
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    setErrors({});
+
+    try {
+      await dispatch(
         sessionActions.signup({
           email,
           username,
@@ -75,19 +89,16 @@ function SignupFormModal() {
           lastName,
           password
         })
-      )
-        .then(closeModal)
-        .catch(async (res) => {
-          const data = await res.json();
-          if (data?.errors) {
-            setErrors(data.errors);
-          }
-        });
+      );
+      closeModal();
+    } catch (res) {
+      setIsLoading(false);
+      const data = await res.json();
+      if (data?.errors) {
+        setErrors(data.errors);
+      }
     }
-    return setErrors({
-      confirmPassword: "Confirm Password field must be the same as the Password field"
-    });
-  };
+  }, [dispatch, email, username, firstName, lastName, password, confirmPassword, closeModal]);
 
   return (
     <>
@@ -101,6 +112,7 @@ function SignupFormModal() {
             onChange={(e) => setEmail(e.target.value)}
             required
             className="signup-form-input"
+            disabled={isLoading}
           />
         </label>
         {errors.email && <p className="signup-form-error">{errors.email}</p>}
@@ -112,6 +124,7 @@ function SignupFormModal() {
             onChange={(e) => setUsername(e.target.value)}
             required
             className="signup-form-input"
+            disabled={isLoading}
           />
         </label>
         {errors.username && <p className="signup-form-error">{errors.username}</p>}
@@ -123,6 +136,7 @@ function SignupFormModal() {
             onChange={(e) => setFirstName(e.target.value)}
             required
             className="signup-form-input"
+            disabled={isLoading}
           />
         </label>
         {errors.firstName && <p className="signup-form-error">{errors.firstName}</p>}
@@ -134,34 +148,72 @@ function SignupFormModal() {
             onChange={(e) => setLastName(e.target.value)}
             required
             className="signup-form-input"
+            disabled={isLoading}
           />
         </label>
         {errors.lastName && <p className="signup-form-error">{errors.lastName}</p>}
         <label className="signup-form-label">
           Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="signup-form-input"
-          />
+          <div className="password-input-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="signup-form-input"
+              disabled={isLoading}
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              tabIndex={-1}
+            >
+              {showPassword ? "👁️" : "👁️‍🗨️"}
+            </button>
+          </div>
         </label>
         {errors.password && <p className="signup-form-error">{errors.password}</p>}
         <label className="signup-form-label">
           Confirm Password
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            className="signup-form-input"
-          />
+          <div className="password-input-wrapper">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              className="signup-form-input"
+              disabled={isLoading}
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+              tabIndex={-1}
+            >
+              {showConfirmPassword ? "👁️" : "👁️‍🗨️"}
+            </button>
+          </div>
         </label>
         {errors.confirmPassword && (
           <p className="signup-form-error">{errors.confirmPassword}</p>
         )}
-        <button type="submit" className="signup-form-button" disabled={isSubmitDisabled}>Sign Up</button>
+        <button 
+          type="submit" 
+          className="signup-form-button" 
+          disabled={isSubmitDisabled || isLoading}
+        >
+          {isLoading ? (
+            <>
+              <span className="spinner"></span>
+              Creating Account...
+            </>
+          ) : (
+            'Sign Up'
+          )}
+        </button>
       </form>
     </>
   );
