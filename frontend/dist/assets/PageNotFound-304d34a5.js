@@ -1,0 +1,1 @@
+import{j as e}from"./index-7c40f22d.js";function o(){return e.jsx("div",{className:"main-container-404",children:e.jsxs("div",{className:"left-panel-404",children:[e.jsx("h1",{children:"Oops!"}),e.jsx("h2",{children:"We can't seem to find the page you're looking for."}),e.jsx("a",{href:"/",children:"Back to Home"})]})})}export{o as default};
