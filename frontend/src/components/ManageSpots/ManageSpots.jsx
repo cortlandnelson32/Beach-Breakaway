@@ -103,6 +103,7 @@ function ManageSpots() {
   }
 
   return (
+    
     <div className="manage-spots-container">
       {/* Show stats and listings when user has spots */}
       {mySpots.length > 0 ? (
